@@ -1,15 +1,16 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the Closure to execute when that URI is requested.
-|
-*/
+// /*
+// |--------------------------------------------------------------------------
+// | Application Routes
+// |--------------------------------------------------------------------------
+// |
+// | Here is where you can register all of the routes for an application.
+// | It's a breeze. Simply tell Laravel the URIs it should respond to
+// | and give it the Closure to execute when that URI is requested.
+// |
+// */
+
 
 // These routes link and load the pages
 Route::get('/', function()
@@ -32,7 +33,7 @@ Route::get('/', function()
 	// dd($user);
 	// echo '</pre>';
 
-	$users = DB::table('test')->get();
+	$users = User::all();
 
 	$title = 'Home';
 	return View::make('home/index')->with('users', $users)
@@ -53,29 +54,23 @@ Route::post('test', function()
 {
 	$input = Input::all();
 
-		// creates the validation rules, and error messages
-	$rules = array(
-		'fname' => 'required|min:5',
-		'lname' => 'required'
-	);
-
-	$messages = array(
-		'fname.required' => 'A First Name is Required',
-		'fname.min'		=> 'First name must be at least 5 characters',
-		'lname.required' => 'A Last Name is Required'
-	);
-
 		// creates the validator which is required to perform validation
-	$v = Validator::make($input, $rules, $messages);
+	$v = Validator::make($input, User::$rules, User::$messages);
 
 		// if validation passes, go ahead and insert name into table
 		// then redirect to the homepage
 	if($v->passes())
 	{
-		DB::table('test')->insert(array(
-			'fname' => $input['fname'], 
-			'lname' => $input['lname']
-		));
+			// inserting into table using Eloquent and model
+		$user = new User;
+		$user->fname = $input['fname'];
+		$user->lname = $input['lname'];
+
+		$user->save();
+		// DB::table('test')->insert(array(
+		// 	'fname' => $input['fname'], 
+		// 	'lname' => $input['lname']
+		// ));
 
 		return Redirect::to('/');
 	}
