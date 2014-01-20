@@ -31,8 +31,14 @@
 			</tbody>
 		</table>
 
+		<?php
+		$comments = Post::find($post->id)->comment; 
 		
-		
+		foreach($comments as $c)
+		{
+			echo '<li>'.$c->comment.'</li>';
+		}
+		?>
 
 			<!-- if there are any errors, print them out -->
 		@if($errors->any())

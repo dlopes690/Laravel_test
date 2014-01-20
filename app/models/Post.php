@@ -8,4 +8,9 @@ class Post extends Eloquent {
 			'title'	 => 'required',
 			'body'	 => 'required'
 		);
+
+	public function comment()
+	{
+		return $this->hasMany('Comment', 'posts_id');
+	}
 }
