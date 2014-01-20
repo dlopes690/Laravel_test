@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<link href="//netdna.bootstrap.cdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
 
 	<style type="text/css">
 		table form{
@@ -28,7 +28,7 @@
 
 	</style>
 
-	<title>{{ $title }}</title>
+	<title></title>
 	{{ HTML::style('css/style.css') }}
 </head>
 <body>
