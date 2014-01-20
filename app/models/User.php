@@ -64,4 +64,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		'lname.required' => 'A Last Name is Required'
 	);
 
+	public function post()
+	{
+		return hasMany('post');
+	}
+
 }
