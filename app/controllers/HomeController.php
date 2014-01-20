@@ -31,6 +31,39 @@ class HomeController extends BaseController {
 		return View::make('home.login');
 	}
 
+	public function postLogin()
+	{
+		$input = Input::all();
+
+		$rules = array(
+				'email'	=> 'required'
+				'password' => 'required'
+			);
+
+		$v = Validator::make($input, $rules);
+
+		if($v->fails())
+		{
+			return Redirect::to('login')->withErrors($v);
+		}
+		else{
+			$credentials = array(
+					'email' => $input['email'],
+					'password' => $input['password']
+				);
+
+			if(Auth::attempt($credentials))
+			{
+				return Redirect::to('admin');
+			}
+			else
+			{
+				return Redirect::to('login');
+			}
+		}
+
+	}
+
 	public function getRegister()
 	{
 		return View::make('home.register');
@@ -67,6 +100,12 @@ class HomeController extends BaseController {
 		{
 			return Redirect::to('register')->withInput()->withErrors($v);
 		}
+	}
+
+	public function logout()
+	{
+		Auth::logout();
+		retrurn Redirect::to('/');
 	}
 
 }
