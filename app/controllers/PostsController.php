@@ -2,6 +2,12 @@
 
 class PostsController extends BaseController {
 
+	protected $post;
+
+	public function __construct(Post $post)
+	{
+		$this->post = $post;
+	}
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -9,8 +15,10 @@ class PostsController extends BaseController {
 	 */
 	public function index()
 	{
-        return "testing posts controller";
-        return View::make('posts.index');
+        $posts = $this->post->all();
+
+        return View::make('posts.index', compact('posts'));
+        	
 	}
 
 	/**
@@ -30,7 +38,24 @@ class PostsController extends BaseController {
 	 */
 	public function store()
 	{
-		//
+			// stores everything that was created via the create method
+		$input = Input::all();
+
+		$v = Validator::make($input, Post::$rules);
+
+		if($v->passes())
+		{
+				// calls create function in this controller
+			$this->posts->create($input);
+
+			return Redirect::route('posts.index');
+		}
+
+		return Redirect::route('posts.create')
+			->withInput()
+			->withErrors($v)
+			->with('message', 'There were validation errors');
+
 	}
 
 	/**
@@ -41,7 +66,10 @@ class PostsController extends BaseController {
 	 */
 	public function show($id)
 	{
-        return View::make('posts.show');
+			// show the individual post by the id
+        $post = $this->post->findOrFail($id);
+
+        return View::make('posts.show', compact('post'));
 	}
 
 	/**
@@ -52,7 +80,14 @@ class PostsController extends BaseController {
 	 */
 	public function edit($id)
 	{
-        return View::make('posts.edit');
+        $post = $this->post->find($id);
+
+        if(is_null($post))
+        {
+        	return Redirect::route('posts.index');
+        }
+
+        return View::make('posts.edit', compact('post'));
 	}
 
 	/**
@@ -63,7 +98,22 @@ class PostsController extends BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$input = array_except(Input::all(), '_method');
+
+		$v = Validator::make($input, Post::$rules);
+
+		if($v->passes())
+		{
+			$post = $this->post->find($id);
+			$post->update($input);
+
+			return View::make('posts.show', $id);
+		}
+
+		return Redirect::route('posts.edit', $id)
+			->withInput()
+			->withErrors($v)
+			->with('message', 'There were validation errors');
 	}
 
 	/**
@@ -74,7 +124,9 @@ class PostsController extends BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$this->post->find($id)->delete();
+
+		return Redirect::route('posts.index');
 	}
 
 }
