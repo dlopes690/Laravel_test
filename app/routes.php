@@ -19,7 +19,7 @@ Route::get('/', function()
 	//$user = DB::table('employees')->where('country', 'United Kingdom')->get();
 	//$user = DB::table('employees')->whereBetween('employeeid', array('3', '5'))->get();
 	// $user = DB::table('employees')->orderBy('lastName', 'asc')->get();
-	$user = DB::table('employees')->select('firstname', 'country')->get();
+	//$user = DB::table('employees')->select('firstname', 'country')->get();
 	//$user = DB::table('employees')->where('employeeid','<', '4')->orWhere('country','United Kingdom')->get();
 	//$user = DB::select('SELECT * FROM employees WHERE country = ?', array('United Kingdom'));
 
@@ -32,8 +32,10 @@ Route::get('/', function()
 	// dd($user);
 	// echo '</pre>';
 
+	$users = DB::table('test')->get();
+
 	$title = 'Home';
-	return View::make('home/index')
+	return View::make('home/index')->with('users', $users)
 			->with('title',$title);
 });
 
@@ -51,16 +53,55 @@ Route::post('test', function()
 {
 	$input = Input::all();
 
-		// laravel way of inserting data to table
-	DB::table('test')->insert(array(
+		// creates the validation rules, and error messages
+	$rules = array(
+		'fname' => 'required|min:5',
+		'lname' => 'required'
+	);
+
+	$messages = array(
+		'fname.required' => 'A First Name is Required',
+		'fname.min'		=> 'First name must be at least 5 characters',
+		'lname.required' => 'A Last Name is Required'
+	);
+
+		// creates the validator which is required to perform validation
+	$v = Validator::make($input, $rules, $messages);
+
+		// if validation passes, go ahead and insert name into table
+		// then redirect to the homepage
+	if($v->passes())
+	{
+		DB::table('test')->insert(array(
 			'fname' => $input['fname'], 
 			'lname' => $input['lname']
 		));
+
+		return Redirect::to('/');
+	}
+		// if it fails, show the error messages and load create page again
+	else
+	{
+		return Redirect::to('create')
+			->withInput()
+			->withErrors($v)
+			->with('message');
+	}
+
+		// laravel way of inserting data to table
+	
 	
 	//DB::insert('INSERT INTO test (fname, lname) VALUES (?, ?)', array($input['fname'], $input['lname']));
 
 
 	$title = 'Home';
 	return View::make('home/index')
+			->with('title',$title);
+});
+
+Route::get('create', function()
+{
+	$title = 'Add New User';
+	return View::make('home/create')
 			->with('title',$title);
 });
