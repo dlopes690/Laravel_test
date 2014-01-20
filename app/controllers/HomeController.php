@@ -36,7 +36,7 @@ class HomeController extends BaseController {
 		$input = Input::all();
 
 		$rules = array(
-				'email'	=> 'required'
+				'email'	=> 'required',
 				'password' => 'required'
 			);
 
@@ -105,7 +105,7 @@ class HomeController extends BaseController {
 	public function logout()
 	{
 		Auth::logout();
-		retrurn Redirect::to('/');
+		return Redirect::to('/');
 	}
 
 }

@@ -10,7 +10,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 *
 	 * @var string
 	 */
-	protected $table = 'test';
+	protected $table = 'users';
 
 		// makes the save not require created_at and updated_at timestamp column on table
 	public $timestamps = false;
