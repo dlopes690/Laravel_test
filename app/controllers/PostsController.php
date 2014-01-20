@@ -46,7 +46,7 @@ class PostsController extends BaseController {
 		if($v->passes())
 		{
 				// calls create function in this controller
-			$this->posts->create($input);
+			$this->post->create($input);
 
 			return Redirect::route('posts.index');
 		}

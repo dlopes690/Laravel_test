@@ -24,13 +24,13 @@
 					<td>{{ $p->author }} </td>
 					<td>{{ $p->title }} </td>
 					<td>{{ $p->body }} </td>
-					<td>{{ link_to_route('posts.show', 'Show Post', array($posts->id), array('class' => 'btn btn-primary')) }} </td>
-					<td>{{ link_to_route('posts.edit', 'Edit Post', array($posts->id), array('class' => 'btn btn-info')) }} </td>
+					<td>{{ link_to_route('posts.show', 'Show Post', array($p->id), array('class' => 'btn btn-primary')) }} </td>
+					<td>{{ link_to_route('posts.edit', 'Edit Post', array($p->id), array('class' => 'btn btn-info')) }} </td>
 					<td>
-						{{ Form::open(array('method' => 'DELETE', 'route' => array('posts.destroy', $post->id))) }}
+						{{ Form::open(array('method' => 'DELETE', 'route' => array('posts.destroy', $p->id))) }}
 						{{ Form::submit('Delete', array('class' => 'btn btn-danger')) }}
 						{{ Form::close() }}
-						<!--{{ link_to_route('posts.delete', 'Delete Post', array($posts->id)) }} -->
+						
 					</td>
 				</tr>
 			@endforeach
