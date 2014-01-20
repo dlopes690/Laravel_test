@@ -24,7 +24,7 @@
 			</li>
 		
 			<li>
-				{{ Form::submit('Add Post', array('class' => 'btn-submit')) }}
+				{{ Form::submit('Add Post', array('class' => 'btn btn-info')) }}
 			</li>
 		</ul>
 		{{ Form::close() }}
