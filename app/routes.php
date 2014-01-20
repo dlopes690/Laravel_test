@@ -14,13 +14,23 @@
 // These routes link and load the pages
 Route::get('/', function()
 {
+		// different ways to perform sql queries, either we can do normal SQL or we can use Laravel built in functions
+	//$user = DB::table('employees')->get();
+	//$user = DB::table('employees')->where('country', 'United Kingdom')->get();
+	//$user = DB::table('employees')->whereBetween('employeeid', array('3', '5'))->get();
+	// $user = DB::table('employees')->orderBy('lastName', 'asc')->get();
+	$user = DB::table('employees')->select('firstname', 'country')->get();
+	//$user = DB::table('employees')->where('employeeid','<', '4')->orWhere('country','United Kingdom')->get();
 	//$user = DB::select('SELECT * FROM employees WHERE country = ?', array('United Kingdom'));
 
-	// echo '<pre>';
-	// print_r($user);
-	// echo '</pre>';
+	// foreach($user as $u)
+	// {
+	// 	echo $u->LastName.'<br>';
+	// }
 
-	//DB::insert('INSERT INTO test (fname, lname) VALUES (?, ?)', array('Adam', 'Long'));
+	// echo '<pre>';
+	// dd($user);
+	// echo '</pre>';
 
 	$title = 'Home';
 	return View::make('home/index')
@@ -41,7 +51,13 @@ Route::post('test', function()
 {
 	$input = Input::all();
 
-	DB::insert('INSERT INTO test (fname, lname) VALUES (?, ?)', array($input['fname'], $input['lname']));
+		// laravel way of inserting data to table
+	DB::table('test')->insert(array(
+			'fname' => $input['fname'], 
+			'lname' => $input['lname']
+		));
+	
+	//DB::insert('INSERT INTO test (fname, lname) VALUES (?, ?)', array($input['fname'], $input['lname']));
 
 
 	$title = 'Home';
